@@ -1,0 +1,10 @@
+__pycache__/
+.coverage
+.coverage.*
+.pytest_cache/
+.ruff_cache/
+.vscode/
+*.log
+coverage.xml
+logs/
+temp/
