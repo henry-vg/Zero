@@ -1,4 +1,4 @@
-from src.guest.hardware.gates.OR import OR
+from src.guest.n010_hardware.n010_gates.n030_OR import OR
 from src.host.kernel.bit import Bit
 
 

@@ -1,4 +1,4 @@
-from src.guest.hardware.gates.XOR import XOR
+from src.guest.n010_hardware.n010_gates.n040_XOR import XOR
 from src.host.kernel.bit import Bit
 
 

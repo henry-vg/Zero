@@ -1,4 +1,4 @@
-from src.guest.hardware.gates.AND import AND
+from src.guest.n010_hardware.n010_gates.n020_AND import AND
 from src.host.kernel.bit import Bit
 
 

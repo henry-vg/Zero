@@ -1,4 +1,4 @@
-from src.guest.hardware.gates.XNOR import XNOR
+from src.guest.n010_hardware.n010_gates.n060_XNOR import XNOR
 from src.host.kernel.bit import Bit
 
 

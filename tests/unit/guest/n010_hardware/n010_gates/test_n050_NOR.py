@@ -1,4 +1,4 @@
-from src.guest.hardware.gates.NOR import NOR
+from src.guest.n010_hardware.n010_gates.n050_NOR import NOR
 from src.host.kernel.bit import Bit
 
 
