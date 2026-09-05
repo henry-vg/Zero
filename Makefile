@@ -14,14 +14,14 @@ run:
 # * -------------------------------- *
 
 test:
-	@python -m pytest tests -p no:cacheprovider
+	@python -m pytest tests
 
 test-with-coverage:
-	@python -m pytest tests --cov=src -p no:cacheprovider && \
+	@python -m pytest tests --cov=src && \
 	rm .coverage
 
 test-with-coverage-and-reports:
-	@python -m pytest tests --cov=src --cov-report=term-missing --cov-report=xml -p no:cacheprovider && \
+	@python -m pytest tests --cov=src --cov-report=term-missing --cov-report=xml && \
 	rm .coverage
 
 # * -------------------------------- *
