@@ -1,7 +1,7 @@
 from src.host.kernel.bit import Bit
 
 
-def nand(
+def NAND(
     a: Bit,
     b: Bit,
 ) -> Bit:
