@@ -15,9 +15,9 @@ def test_bit_accepts_one():
 
 
 def test_bit_repr():
-    bit_0 = Bit(0)
+    bit = Bit(0)
 
-    assert repr(bit_0) == "Bit(0)"
+    assert repr(bit) == "Bit(0)"
 
 
 def test_bit_rejects_invalid_value():
