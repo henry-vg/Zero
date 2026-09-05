@@ -1,9 +1,9 @@
-from src.guest.hardware.gates.AND import AND
-from src.guest.hardware.gates.NOR import NOR
-from src.guest.hardware.gates.NOT import NOT
-from src.guest.hardware.gates.OR import OR
-from src.guest.hardware.gates.XNOR import XNOR
-from src.guest.hardware.gates.XOR import XOR
+from src.guest.n010_hardware.n010_gates.n010_NOT import NOT
+from src.guest.n010_hardware.n010_gates.n020_AND import AND
+from src.guest.n010_hardware.n010_gates.n030_OR import OR
+from src.guest.n010_hardware.n010_gates.n040_XOR import XOR
+from src.guest.n010_hardware.n010_gates.n050_NOR import NOR
+from src.guest.n010_hardware.n010_gates.n060_XNOR import XNOR
 from src.host.kernel.bit import Bit
 from src.host.kernel.NAND import NAND
 
