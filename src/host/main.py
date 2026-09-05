@@ -1,18 +1,22 @@
+from src.guest.hardware.gates.NOT import NOT
 from src.host.kernel.bit import Bit
-from src.host.kernel.nand import nand
+from src.host.kernel.NAND import NAND
 
 
 def main() -> str:
-    a = Bit(1)
-    b = Bit(0)
+    NAND_result = NAND(
+        Bit(0),
+        Bit(1),
+    )
 
-    result = nand(a, b)
+    NOT_result = NOT(
+        Bit(0),
+    )
 
     return "\n".join(
         [
-            f"a    = {a}",
-            f"b    = {b}",
-            f"NAND = {result}",
+            f"NAND = {NAND_result}",
+            f"NOT = {NOT_result}",
         ]
     )
 
