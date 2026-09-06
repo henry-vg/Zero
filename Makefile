@@ -8,6 +8,7 @@ SHELL := /bin/bash
 	test-unit \
 	test-unit-with-coverage \
 	test-unit-with-coverage-and-reports \
+	test-conformance \
 	test-structure \
 	compile-requirements \
 	check-requirements
@@ -40,6 +41,9 @@ test-unit-with-coverage:
 test-unit-with-coverage-and-reports:
 	@python -m pytest tests/unit --cov=src --cov-report=term-missing --cov-report=xml && \
 	rm .coverage
+
+test-conformance:
+	@python -m pytest tests/conformance
 
 test-structure:
 	@SRC=$$(cd src && find . -type f -name "*.py" ! -name "__init__.py" | sed 's|^\./||' | sort); \
@@ -82,10 +86,10 @@ check-requirements:
 	cp $(REQUIREMENTS_TXT_PATH) "$$tmp_file"; \
 	CUSTOM_COMPILE_COMMAND='make compile-requirements' python -m piptools compile --resolver=backtracking --strip-extras --quiet --output-file="$$tmp_file" $(REQUIREMENTS_IN_PATH) >/dev/null; \
 	if diff -q $(REQUIREMENTS_TXT_PATH) "$$tmp_file" >/dev/null; then \
-echo 'Requirements up to date.'; \
+		echo 'Requirements up to date.'; \
 	else \
 		echo 'Requirements out of sync. Try running "make compile-requirements".'; \
-	exit 1; \
+		exit 1; \
 	fi
 	
 # * -------------------------------- *
