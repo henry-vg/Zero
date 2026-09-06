@@ -64,6 +64,16 @@ test-structure:
 
 # * -------------------------------- *
 
+lint:
+	@python -m ruff check src tests
+	@python -m ruff format --check src tests
+
+format:
+	@python -m ruff check --fix src tests
+	@python -m ruff format src tests
+
+# * -------------------------------- *
+
 REQUIREMENTS_TXT_PATH = "requirements.txt"
 REQUIREMENTS_IN_PATH = "requirements.in"
 
