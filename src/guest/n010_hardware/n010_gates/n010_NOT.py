@@ -1,5 +1,7 @@
-from src.host.trusted_base.bit import Bit
-from src.host.trusted_base.NAND import NAND
+from src.host.trusted_base import (
+    NAND,
+    Bit,
+)
 
 
 def NOT(
