@@ -46,6 +46,7 @@ test-structure:
 			echo 'Missing source files:'; \
 			echo "$$MISSING_SRC"; \
 		fi; \
+		exit 1; \
 	fi
 
 # * -------------------------------- *
@@ -58,6 +59,7 @@ compile-requirements:
 			echo 'Requirements compiled successfully.'; \
 		else \
 			echo 'Failed to compile requirements.'; \
+			exit 1; \
 		fi
 
 check-requirements:
@@ -65,10 +67,11 @@ check-requirements:
 	trap 'rm -f "$$tmp_file"' EXIT; \
 	cp $(REQUIREMENTS_TXT_PATH) "$$tmp_file"; \
 	CUSTOM_COMPILE_COMMAND='make compile-requirements' python -m piptools compile --resolver=backtracking --strip-extras --quiet --output-file="$$tmp_file" $(REQUIREMENTS_IN_PATH) >/dev/null; \
-	if ! diff -q $(REQUIREMENTS_TXT_PATH) "$$tmp_file" >/dev/null; then \
-		echo 'Requirements out of sync. Try running "make compile-requirements".'; \
+	if diff -q $(REQUIREMENTS_TXT_PATH) "$$tmp_file" >/dev/null; then \
+echo 'Requirements up to date.'; \
 	else \
-		echo 'Requirements up to date.'; \
+		echo 'Requirements out of sync. Try running "make compile-requirements".'; \
+	exit 1; \
 	fi
 	
 # * -------------------------------- *
