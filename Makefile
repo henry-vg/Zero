@@ -5,6 +5,9 @@ SHELL := /bin/bash
 	test \
 	test-with-coverage \
 	test-with-coverage-and-reports \
+	test-unit \
+	test-unit-with-coverage \
+	test-unit-with-coverage-and-reports \
 	test-structure \
 	compile-requirements \
 	check-requirements
@@ -25,6 +28,17 @@ test-with-coverage:
 
 test-with-coverage-and-reports:
 	@python -m pytest tests --cov=src --cov-report=term-missing --cov-report=xml && \
+	rm .coverage
+
+test-unit:
+	@python -m pytest tests/unit
+
+test-unit-with-coverage:
+	@python -m pytest tests/unit --cov=src && \
+	rm .coverage
+
+test-unit-with-coverage-and-reports:
+	@python -m pytest tests/unit --cov=src --cov-report=term-missing --cov-report=xml && \
 	rm .coverage
 
 test-structure:
