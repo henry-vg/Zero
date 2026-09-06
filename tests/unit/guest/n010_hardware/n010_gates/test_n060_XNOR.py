@@ -1,5 +1,5 @@
 from src.guest.n010_hardware.n010_gates.n060_XNOR import XNOR
-from src.host.trusted_base.bit import Bit
+from src.host.trusted_base import Bit
 
 
 def test_XNOR_truth_table():

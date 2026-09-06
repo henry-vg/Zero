@@ -1,5 +1,5 @@
 from src.guest.n010_hardware.n010_gates.n040_XOR import XOR
-from src.host.trusted_base.bit import Bit
+from src.host.trusted_base import Bit
 
 
 def test_XOR_truth_table():

@@ -1,5 +1,5 @@
 import pytest
-from src.host.trusted_base.bit import Bit
+from src.host.trusted_base import Bit
 
 
 def test_bit_accepts_zero():
