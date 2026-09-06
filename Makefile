@@ -15,11 +15,6 @@ SHELL := /bin/bash
 
 # * -------------------------------- *
 
-run:
-	@python -m src.host.main
-
-# * -------------------------------- *
-
 test:
 	@python -m pytest tests
 
