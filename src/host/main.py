@@ -4,8 +4,10 @@ from src.guest.n010_hardware.n010_gates.n030_OR import OR
 from src.guest.n010_hardware.n010_gates.n040_XOR import XOR
 from src.guest.n010_hardware.n010_gates.n050_NOR import NOR
 from src.guest.n010_hardware.n010_gates.n060_XNOR import XNOR
-from src.host.trusted_base.bit import Bit
-from src.host.trusted_base.NAND import NAND
+from src.host.trusted_base import (
+    NAND,
+    Bit,
+)
 
 
 def main() -> str:
