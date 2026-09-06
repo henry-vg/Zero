@@ -1,5 +1,5 @@
 from src.guest.n010_hardware.n010_gates.n020_AND import AND
-from src.host.kernel.bit import Bit
+from src.host.trusted_base.bit import Bit
 
 
 def test_AND_truth_table():

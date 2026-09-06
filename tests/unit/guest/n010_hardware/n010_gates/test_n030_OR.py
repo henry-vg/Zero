@@ -1,5 +1,5 @@
 from src.guest.n010_hardware.n010_gates.n030_OR import OR
-from src.host.kernel.bit import Bit
+from src.host.trusted_base.bit import Bit
 
 
 def test_OR_truth_table():

@@ -1,4 +1,4 @@
-from src.host.kernel.bit import Bit
+from src.host.trusted_base.bit import Bit
 
 
 def NAND(
