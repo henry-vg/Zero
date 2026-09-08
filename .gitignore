@@ -1,4 +1,6 @@
 __pycache__/
+.agents/
+.codex/
 .coverage
 .coverage.*
 .pytest_cache/
