@@ -334,6 +334,14 @@ Todo diretório conceitual do GUEST deve possuir um `README.md` no próprio dire
 
 Diretórios irmãos devem representar categorias do mesmo nível semântico e segundo o mesmo eixo de classificação. Se a responsabilidade de uma pasta não puder ser definida de forma distinta e não redundante, sua posição na taxonomia deve ser reconsiderada.
 
+### 9.3. Nomenclatura do GUEST
+
+A nomenclatura representa a entidade do GUEST, não a construção Python usada para descrevê-la:
+
+- gates usam nomes em `UPPERCASE`, como `NAND`, `NOT`, `AND` e `XOR`;
+- estruturas computacionais nomeadas usam `PascalCase`, como `HalfAdder` e `FullAdder`;
+- módulos preservam o nome da entidade após seu prefixo causal, como `n040_XOR.py` e `n010_HalfAdder.py`.
+
 ## 10. Critério permanente de decisão
 
 Ao introduzir uma nova capacidade relacionada ao GUEST, responda:
