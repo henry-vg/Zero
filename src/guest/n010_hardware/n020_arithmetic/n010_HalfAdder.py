@@ -7,7 +7,10 @@ def HalfAdder(
     a: Bit,
     b: Bit,
 ) -> tuple[Bit, Bit]:
+    result = XOR(a, b)
+    carry = AND(a, b)
+
     return (
-        XOR(a, b),
-        AND(a, b),
+        result,
+        carry,
     )

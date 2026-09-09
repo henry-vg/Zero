@@ -10,8 +10,9 @@ def FullAdder(
 ) -> tuple[Bit, Bit]:
     first_sum, first_carry = HalfAdder(a, b)
     result, second_carry = HalfAdder(first_sum, carry_in)
+    carry_out = OR(first_carry, second_carry)
 
     return (
         result,
-        OR(first_carry, second_carry),
+        carry_out,
     )
