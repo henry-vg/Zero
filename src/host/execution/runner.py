@@ -42,7 +42,8 @@ def run(
 
             print(" METRICS ".center(terminal_width, "─"))
             print("GUEST")
-            print(f"  NAND calls  {metrics.nand_calls}")
+            print(f"  BIT instances  {metrics.bit_instances}")
+            print(f"  NAND calls     {metrics.nand_calls}")
             print("HOST")
-            print(f"  Elapsed     {_format_duration(elapsed_ns)}")
+            print(f"  Elapsed        {_format_duration(elapsed_ns)}")
             print("─" * terminal_width)

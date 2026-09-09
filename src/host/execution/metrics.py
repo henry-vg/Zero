@@ -15,6 +15,7 @@ R = TypeVar("R")
 
 @dataclass
 class ExecutionMetrics:
+    bit_instances: int = 0
     nand_calls: int = 0
 
 
@@ -46,6 +47,8 @@ def count_metric(
             *args: P.args,
             **kwargs: P.kwargs,
         ) -> R:
+            result = function(*args, **kwargs)
+
             metrics = _current_metrics.get()
 
             if metrics is not None:
@@ -55,7 +58,7 @@ def count_metric(
                     getattr(metrics, metric) + 1,
                 )
 
-            return function(*args, **kwargs)
+            return result
 
         return wrapper
 
