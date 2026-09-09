@@ -18,9 +18,9 @@ A partir dela, toda capacidade do computador deve ser construída progressivamen
 
 ## 2. Motivação e objetivo
 
-Assembly ainda pressupõe que muitas abstrações já existam: instruções, registradores, memória, operações aritméticas, jumps, program counter, arquitetura e uma CPU capaz de interpretar tudo isso. Zero percorre esse caminho na direção contrária: em vez de começar com uma máquina pronta e escrever software para ela, o projeto começa com quase nenhuma capacidade computacional e deixa que cada nova necessidade revele a próxima abstração. O valor do projeto está tanto no resultado quanto em **vivenciar o nascimento das abstrações**: compreender concretamente como lógica se torna aritmética, estado, memória, arquitetura, instruções, software e, eventualmente, programas de alto nível.
+Assembly ainda pressupõe que muitas abstrações já existam: instruções, registradores, memória, operações aritméticas, jumps, program counter, arquitetura e uma CPU capaz de interpretar tudo isso. Zero percorre esse caminho na direção contrária: em vez de começar com uma máquina pronta, o projeto começa com quase nenhuma capacidade computacional e deixa que cada nova necessidade revele a próxima abstração. O valor do projeto está tanto no resultado quanto em **vivenciar o nascimento das abstrações**: compreender concretamente como lógica se torna aritmética, estado, memória e, se necessário, arquiteturas capazes de sustentar instruções, software e programas de nível superior.
 
-O primeiro grande marco é executar `Hello, World!` em uma máquina construída pelo próprio Zero, mas esse marco não encerra o projeto. Zero deve permanecer extensível o suficiente para continuar evoluindo em direção a runtime, linguagem, biblioteca padrão, sistemas mais complexos e, possivelmente, self-hosting parcial ou completo. Uma trajetória conceitual possível é:
+O primeiro grande marco é fazer o GUEST produzir causalmente a representação de `Hello, World!`, enquanto o HOST se limita a construir, estimular, simular e observar essa computação. Esse marco não exige que Zero já possua CPU, machine code, assembly ou uma linguagem própria. O projeto deve permanecer extensível para que essas e outras camadas possam emergir caso novas necessidades as justifiquem. Uma trajetória conceitual possível é:
 
 0. NAND
 1. gates
@@ -37,7 +37,7 @@ O primeiro grande marco é executar `Hello, World!` em uma máquina construída 
 12. estruturas de dados
 13. programas
 
-Essa sequência é um mapa de compreensão, não uma arquitetura pronta a ser reproduzida.
+Essa sequência é um mapa de possibilidades, não uma arquitetura pronta a ser reproduzida nem um caminho obrigatório até `Hello, World!`.
 
 ## 3. HOST, GUEST e Trusted Base
 
@@ -55,7 +55,7 @@ O **HOST** é o universo hospedeiro no qual Zero é construído e simulado. Ele 
 - observar resultados;
 - depurar, inspecionar e visualizar.
 
-O HOST não precisa ser derivado de `NAND`, o seu papel é fornecer as condições para que o universo Zero exista, mas **sem realizar no lugar do GUEST a computação que o GUEST deveria construir**. Se a simulação exigir no futuro mecanismos como tempo, propagação ou agendamento de eventos, o HOST pode fornecê-los como infraestrutura de simulação. Isso não autoriza o HOST a fornecer memória, registradores, branching, aritmética, interpretação de instruções ou qualquer outra capacidade computacional que pertença à máquina. O HOST pode chamar componentes diretamente durante testes, inspeção ou desenvolvimento. Isso é um harness de desenvolvimento, não significa que uma máquina Zero completa já esteja executando autonomamente. Uma execução genuinamente pertencente ao GUEST emerge quando o HOST se limita a fornecer condições externas - construção, estímulos, tempo e observação - enquanto a causalidade computacional acontece dentro da estrutura construída pelo GUEST.
+O HOST não precisa ser derivado de `NAND`. O seu papel é fornecer as condições para que o universo Zero exista, mas **sem realizar no lugar do GUEST a computação que o GUEST deveria construir**. Se a simulação exigir no futuro mecanismos como tempo, propagação ou agendamento de eventos, o HOST pode fornecê-los como infraestrutura de simulação. Isso não autoriza o HOST a fornecer memória, registradores, branching, aritmética, interpretação de instruções ou qualquer outra capacidade computacional que pertença à máquina. O HOST pode materializar `Bit`s como estímulos externos, chamar componentes diretamente durante testes, inspeção ou desenvolvimento e apresentar seus resultados. Um entrypoint do HOST pode construir uma composição do GUEST, fornecer suas entradas e observar ou imprimir suas saídas; a computação continua pertencendo ao GUEST desde que sua causalidade aconteça na estrutura construída. Uma execução genuinamente pertencente ao GUEST emerge quando o HOST se limita a fornecer condições externas - construção, estímulos, tempo e observação - enquanto a causalidade computacional acontece dentro da estrutura construída pelo GUEST.
 
 > O HOST fornece as condições da execução; o GUEST fornece a computação.
 
@@ -93,7 +93,7 @@ O GUEST pode acessar somente essa superfície do HOST. Adicionar uma nova capaci
 Bit ∈ {0, 1}
 ```
 
-Sua responsabilidade é representar exatamente esses dois estados. `Bit` deve implementar apenas suas invariantes intrínsecas. Restrições destinadas a impedir que o GUEST use Python para trapacear não devem ser incorporadas ao tipo apenas como mecanismos defensivos; elas pertencem à suíte de conformance.
+Sua responsabilidade é representar exatamente esses dois estados lógicos fundamentais, materializados pelo HOST como parte das condições do universo simulado. O HOST e a Trusted Base podem construir `Bit(0)` e `Bit(1)` para fornecer estímulos ou produzir resultados axiomáticos. O GUEST derivado não cria `Bit`s: ele os recebe e os transforma ou propaga por meio de capacidades já existentes. Em seus módulos Python, `Bit` aparece apenas em type annotations para descrever interfaces; `Bit(...)` não é uma operação computacional concedida ao GUEST. `Bit` deve implementar apenas suas invariantes intrínsecas. Restrições destinadas a impedir que o GUEST use Python para trapacear não devem ser incorporadas ao tipo apenas como mecanismos defensivos; elas pertencem à suíte de conformance.
 
 #### 3.3.2 NAND
 
@@ -208,6 +208,9 @@ Python não pode computar pelo GUEST - construções nativas que forneçam semâ
 - operadores aritméticos nativos;
 - comparações nativas;
 - builtins ou APIs que realizem computação pelo GUEST;
+- containers, indexação ou acesso a atributos usados como mecanismos computacionais nativos;
+- literais inteiros usados para introduzir valores computacionais;
+- construção direta de `Bit` em módulos derivados do GUEST;
 - acesso à representação interna de objetos para contornar componentes derivados.
 
 A lei é estável. O conjunto de formas capazes de violá-la pode crescer conforme novos cheats sejam identificados.
@@ -354,6 +357,6 @@ Se a resposta for a segunda, a implementação deve ser reconsiderada.
 
 **Zero é um computador construído progressivamente a partir de uma Trusted Base mínima de `Bit` e `NAND`, em que toda capacidade computacional do GUEST precisa demonstrar como emerge das anteriores, enquanto o HOST fornece somente a infraestrutura necessária para construir, simular e observar essa evolução, e uma suíte de conformance prova que o GUEST usa apenas seu passado causal e a superfície axiomática explicitamente concedida.**
 
-O sucesso do projeto não é apenas chegar a um programa complexo. É chegar até ele sem perder a capacidade de apontar para cada abstração intermediária e explicar:
+O sucesso do projeto não é apenas chegar a uma computação complexa. É chegar até ela sem perder a capacidade de apontar para cada abstração intermediária e explicar:
 
 > **Foi assim que isso passou a existir.**
