@@ -42,6 +42,16 @@ def _trusted_base_exports() -> frozenset[str]:
     raise AssertionError("Trusted Base must declare __all__")
 
 
+def _import_aliases(
+    node: ast.Import | ast.ImportFrom,
+) -> tuple[str, ...]:
+    return tuple(
+        f"{alias.name} as {alias.asname}"
+        for alias in node.names
+        if alias.asname is not None
+    )
+
+
 def test_guest_imports_respect_host_boundary():
     trusted_base_exports = _trusted_base_exports()
     violations = []
@@ -60,6 +70,12 @@ def test_guest_imports_respect_host_boundary():
 
             if any(alias.name == "*" for alias in node.names):
                 violations.append(f"{location} -> wildcard imports are forbidden")
+                continue
+
+            if aliases := _import_aliases(node):
+                violations.append(
+                    f"{location} -> import aliases are forbidden: {', '.join(aliases)}"
+                )
                 continue
 
             module = node.module
