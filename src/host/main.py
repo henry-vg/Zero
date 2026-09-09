@@ -1,39 +1,33 @@
-from src.guest.n010_hardware.n010_gates.n010_NOT import NOT
-from src.guest.n010_hardware.n010_gates.n020_AND import AND
-from src.guest.n010_hardware.n010_gates.n030_OR import OR
-from src.guest.n010_hardware.n010_gates.n040_XOR import XOR
-from src.guest.n010_hardware.n010_gates.n050_NOR import NOR
-from src.guest.n010_hardware.n010_gates.n060_XNOR import XNOR
-from src.host.trusted_base import (
-    NAND,
-    Bit,
-)
+from src.guest.n010_hardware.n020_arithmetic.n040_Adder4 import Adder4
+from src.host.execution.runner import run
+from src.host.trusted_base import Bit
 
 
 def main() -> str:
-    NAND_result = NAND(Bit(1), Bit(1))
-    AND_result = AND(Bit(1), Bit(1))
-    NOR_result = NOR(Bit(0), Bit(1))
-    NOT_result = NOT(Bit(1))
-    OR_result = OR(Bit(1), Bit(1))
-    XNOR_result = XNOR(Bit(1), Bit(1))
-    XOR_result = XOR(Bit(1), Bit(1))
+    r_0, r_1, r_2, r_3, c = Adder4(
+        Bit(1),
+        Bit(0),
+        Bit(0),
+        Bit(1),
+        Bit(1),
+        Bit(0),
+        Bit(1),
+        Bit(0),
+    )
 
     return "\n".join(
         [
-            f"NAND_result = {NAND_result}",
-            f"AND_result  = {AND_result}",
-            f"NOR_result  = {NOR_result}",
-            f"NOT_result  = {NOT_result}",
-            f"OR_result   = {OR_result}",
-            f"XNOR_result = {XNOR_result}",
-            f"XOR_result  = {XOR_result}",
+            f"c   = {c}",
+            f"r_3 = {r_3}",
+            f"r_2 = {r_2}",
+            f"r_1 = {r_1}",
+            f"r_0 = {r_0}",
         ]
     )
 
 
 if __name__ == "__main__":
     try:
-        print(main())
+        run(main)
     except Exception as e:
         print(f"[FATAL] {e}")
