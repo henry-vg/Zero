@@ -294,6 +294,8 @@ Assim, os unit tests provam o que o componente faz; os conformance tests provam 
 
 ## 9. Convenções estruturais permanentes
 
+### 9.1. Fronteiras do codebase
+
 O codebase materializa as fronteiras conceituais do projeto:
 
 ```
@@ -319,6 +321,15 @@ A superfície pública da Trusted Base é `src.host.trusted_base` - módulos int
 - símbolos expostos pela superfície pública da Trusted Base.
 
 Essas convenções existem para tornar as fronteiras do Zero verificáveis pelo próprio codebase.
+
+### 9.2. Documentação conceitual
+
+Todo diretório conceitual do GUEST deve possuir um `README.md` no próprio diretório. O README documenta o significado da categoria representada pela pasta, não informações que já possam ser obtidas mecanicamente pelo filesystem, código ou testes.
+
+- Diretórios agregadores documentam sua responsabilidade: o que agrupam e qual fronteira conceitual faz seus domínios pertencerem à mesma categoria;
+- Diretórios de domínio documentam sua responsabilidade e fronteira conceitual, além dos conceitos necessários para compreender o domínio.
+
+Diretórios irmãos devem representar categorias do mesmo nível semântico e segundo o mesmo eixo de classificação. Se a responsabilidade de uma pasta não puder ser definida de forma distinta e não redundante, sua posição na taxonomia deve ser reconsiderada.
 
 ## 10. Critério permanente de decisão
 
