@@ -1,6 +1,8 @@
+from src.host.execution.metrics import count_metric
 from src.host.trusted_base.bit import Bit
 
 
+@count_metric("nand_calls")
 def NAND(
     a: Bit,
     b: Bit,
