@@ -27,7 +27,4 @@ def main() -> str:
 
 
 if __name__ == "__main__":
-    try:
-        run(main)
-    except Exception as e:
-        print(f"[FATAL] {e}")
+    print(run(main))

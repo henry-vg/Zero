@@ -1,16 +1,11 @@
-from collections.abc import Generator
+from collections.abc import (
+    Callable,
+)
 from contextlib import contextmanager
 from contextvars import ContextVar
 from dataclasses import dataclass
 from functools import wraps
-from typing import (
-    Callable,
-    ParamSpec,
-    TypeVar,
-)
-
-P = ParamSpec("P")
-R = TypeVar("R")
+from typing import Generator
 
 
 @dataclass
@@ -26,7 +21,7 @@ _current_metrics: ContextVar[ExecutionMetrics | None] = ContextVar(
 
 
 @contextmanager
-def collect_metrics() -> Generator[ExecutionMetrics]:
+def collect_metrics() -> Generator[ExecutionMetrics, None, None]:
     metrics = ExecutionMetrics()
     token = _current_metrics.set(metrics)
 
@@ -36,7 +31,7 @@ def collect_metrics() -> Generator[ExecutionMetrics]:
         _current_metrics.reset(token)
 
 
-def count_metric(
+def count_metric[**P, R](
     metric: str,
 ) -> Callable[[Callable[P, R]], Callable[P, R]]:
     def decorator(

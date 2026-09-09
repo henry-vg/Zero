@@ -22,28 +22,29 @@ def _format_duration(
 
 def run(
     program: Callable[[], str],
-) -> None:
-    terminal_width = shutil.get_terminal_size().columns
-
+) -> str:
+    print("Running...")
     with collect_metrics() as metrics:
-        print("Running...")
-        print(" OUTPUT ".center(terminal_width, "─"))
-
         started_at = perf_counter_ns()
 
         try:
-            print(program())
+            output = program()
 
         except Exception as e:
-            print(f"[FATAL] {e}")
+            output = f"[FATAL] {e}"
 
-        finally:
-            elapsed_ns = perf_counter_ns() - started_at
+        elapsed_ns = perf_counter_ns() - started_at
+        terminal_width = shutil.get_terminal_size().columns
 
-            print(" METRICS ".center(terminal_width, "─"))
-            print("GUEST")
-            print(f"  BIT instances  {metrics.bit_instances}")
-            print(f"  NAND calls     {metrics.nand_calls}")
-            print("HOST")
-            print(f"  Elapsed        {_format_duration(elapsed_ns)}")
-            print("─" * terminal_width)
+    return "\n".join(
+        [
+            " OUTPUT ".center(terminal_width, "─"),
+            output,
+            " METRICS ".center(terminal_width, "─"),
+            "GUEST",
+            *(f"  {name}: {value}" for name, value in vars(metrics).items()),
+            "HOST",
+            f"  time_elapsed: {_format_duration(elapsed_ns)}",
+            "─" * terminal_width,
+        ]
+    )
