@@ -28,17 +28,14 @@ def test_Adder2_truth_table():
     _assert_Adder2(0, 0, 1, 0, 1, 0, 0)
     _assert_Adder2(0, 0, 0, 1, 0, 1, 0)
     _assert_Adder2(0, 0, 1, 1, 1, 1, 0)
-
     _assert_Adder2(1, 0, 0, 0, 1, 0, 0)
     _assert_Adder2(1, 0, 1, 0, 0, 1, 0)
     _assert_Adder2(1, 0, 0, 1, 1, 1, 0)
     _assert_Adder2(1, 0, 1, 1, 0, 0, 1)
-
     _assert_Adder2(0, 1, 0, 0, 0, 1, 0)
     _assert_Adder2(0, 1, 1, 0, 1, 1, 0)
     _assert_Adder2(0, 1, 0, 1, 0, 0, 1)
     _assert_Adder2(0, 1, 1, 1, 1, 0, 1)
-
     _assert_Adder2(1, 1, 0, 0, 1, 1, 0)
     _assert_Adder2(1, 1, 1, 0, 0, 0, 1)
     _assert_Adder2(1, 1, 0, 1, 1, 0, 1)
