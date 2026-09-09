@@ -248,6 +248,8 @@ Zero não deve reproduzir automaticamente uma arquitetura conhecida apenas porqu
 
 Uma nova abstração computacional só deve surgir depois que existir um problema concreto que a exija. Não devemos criar antecipadamente `Wire`, `Signal`, `Circuit`, `Clock`, `Register`, `Memory` ou qualquer outra capacidade apenas porque imaginamos que serão úteis. Primeiro aparece o problema; depois procuramos a menor abstração capaz de resolvê-lo. A arquitetura conhecida pode informar uma decisão, mas não substituir a descoberta do problema que justifica essa decisão.
 
+Uma limitação potencial de uma abstração existente não deve ser tratada automaticamente como problema concreto. Ela se torna problema quando impede uma computação que o projeto decidiu realizar; antes disso, resolvê-la pode apenas generalizar a abstração por antecipação.
+
 ### 7.2. Repetição antes da generalização
 
 Nem toda repetição deve ser eliminada imediatamente. Antes de criar algo como:
