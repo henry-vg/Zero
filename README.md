@@ -85,7 +85,7 @@ src.host.trusted_base
 
 O GUEST pode acessar somente essa superfície do HOST. Adicionar uma nova capacidade à Trusted Base é uma decisão fundamental: significa declarar que aquela capacidade passa a existir no universo Zero sem precisar ser conquistada. Por isso, a Trusted Base deve permanecer pequena, explícita e integralmente compreensível.
 
-#### Bit
+#### 3.3.1 Bit
 
 `Bit` define o domínio lógico fundamental:
 
@@ -95,7 +95,7 @@ Bit ∈ {0, 1}
 
 Sua responsabilidade é representar exatamente esses dois estados. `Bit` deve implementar apenas suas invariantes intrínsecas. Restrições destinadas a impedir que o GUEST use Python para trapacear não devem ser incorporadas ao tipo apenas como mecanismos defensivos; elas pertencem à suíte de conformance.
 
-#### NAND
+#### 3.3.2 NAND
 
 `NAND` é o axioma lógico operacional:
 
@@ -198,7 +198,7 @@ Essa regra torna o grafo de dependências acíclico por construção.
 
 Correção comportamental não é suficiente. Um componente pode produzir a resposta certa usando mecanismos que o Zero ainda não conquistou. Por isso, a suíte de **conformance** existe para provar que o código do GUEST respeita três leis fundamentais.
 
-### L1 - Pureza da linguagem hospedeira
+### 6.1. L1 - Pureza da linguagem hospedeira
 
 Python não pode computar pelo GUEST - construções nativas que forneçam semântica computacional ainda não conquistada são proibidas dentro do código do GUEST. Exemplos incluem:
 
@@ -212,7 +212,7 @@ Python não pode computar pelo GUEST - construções nativas que forneçam semâ
 
 A lei é estável. O conjunto de formas capazes de violá-la pode crescer conforme novos cheats sejam identificados.
 
-### L2 - Dependência causal
+### 6.2. L2 - Dependência causal
 
 Uma unidade do GUEST só pode depender de unidades do GUEST que pertençam estritamente ao seu passado causal:
 
@@ -222,7 +222,7 @@ A -> B somente se position(B) < position(A)
 
 Posições ausentes, inválidas ou ambíguas também violam essa lei porque impedem que a relação causal seja determinada.
 
-### L3 - Fronteira com o HOST
+### 6.3. L3 - Fronteira com o HOST
 
 A única passagem privilegiada do GUEST para fora do próprio GUEST é a superfície pública da Trusted Base:
 
@@ -272,7 +272,7 @@ O filesystem do GUEST deve funcionar como registro arqueológico do nascimento d
 
 Os testes do Zero possuem duas responsabilidades diferentes.
 
-### Testes unitários
+### 8.1. Testes unitários
 
 Provam comportamento e invariantes locais. Exemplos:
 
@@ -282,7 +282,7 @@ Provam comportamento e invariantes locais. Exemplos:
 
 Os testes unitários devem acompanhar a estrutura do código que testam.
 
-### Testes de conformance
+### 8.2. Testes de conformance
 
 Provam propriedades globais da construção:
 
