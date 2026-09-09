@@ -1,4 +1,7 @@
-from src.host.trusted_base import NAND, Bit
+from src.host.trusted_base import (
+    NAND,
+    Bit,
+)
 
 
 def test_NAND_truth_table():
