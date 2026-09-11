@@ -16,8 +16,8 @@ Ao somar dois bits, uma única saída lógica não é suficiente para representa
 
 Por isso, a soma de uma posição produz duas saídas:
 
-* `SUM`: o bit de resultado da posição atual;
-* `CARRY`: o bit que representa valor a ser propagado para a próxima posição, quando tal composição maior existir.
+- `SUM`: o bit de resultado da posição atual;
+- `CARRY`: o bit que representa valor a ser propagado para a próxima posição, quando tal composição maior existir.
 
 | A | B | CARRY | SUM |
 | - | - | ----- | --- |
