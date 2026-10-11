@@ -23,7 +23,7 @@ def _format_duration(
 def run(
     program: Callable[[], str],
 ) -> str:
-    print("Running...")
+    print("\033[2mRunning...\033[0m")
     with collect_metrics() as metrics:
         started_at = perf_counter_ns()
 
@@ -38,13 +38,16 @@ def run(
 
     return "\n".join(
         [
-            " OUTPUT ".center(terminal_width, "─"),
+            f"\033[96m{' OUTPUT '.center(terminal_width, '─')}\033[0m",
             output,
-            " METRICS ".center(terminal_width, "─"),
-            "GUEST",
-            *(f"  {name}: {value}" for name, value in vars(metrics).items()),
-            "HOST",
-            f"  time_elapsed: {_format_duration(elapsed_ns)}",
-            "─" * terminal_width,
+            f"\033[96m{' METRICS '.center(terminal_width, '─')}\033[0m",
+            "\033[1;33mGUEST\033[0m",
+            *(
+                f"  {name}: \033[32m{value}\033[0m"
+                for name, value in vars(metrics).items()
+            ),
+            "\033[1;33mHOST\033[0m",
+            f"  time_elapsed: \033[35m{_format_duration(elapsed_ns)}\033[0m",
+            f"\033[96m{'─' * terminal_width}\033[0m",
         ]
     )
