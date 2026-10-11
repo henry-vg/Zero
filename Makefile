@@ -16,34 +16,34 @@ SHELL := /bin/bash
 # * -------------------------------- *
 
 run:
-	@python -m src.host.main
+	@uv run python -m src.host.main
 
 # * -------------------------------- *
 
 test:
-	@python -m pytest tests
+	@uv run python -m pytest tests
 
 test-with-coverage:
-	@python -m pytest tests --cov=src && \
+	@uv run python -m pytest tests --cov=src && \
 	rm .coverage
 
 test-with-coverage-and-reports:
-	@python -m pytest tests --cov=src --cov-report=term-missing --cov-report=xml && \
+	@uv run python -m pytest tests --cov=src --cov-report=term-missing --cov-report=xml && \
 	rm .coverage
 
 test-unit:
-	@python -m pytest tests/unit
+	@uv run python -m pytest tests/unit
 
 test-unit-with-coverage:
-	@python -m pytest tests/unit --cov=src && \
+	@uv run python -m pytest tests/unit --cov=src && \
 	rm .coverage
 
 test-unit-with-coverage-and-reports:
-	@python -m pytest tests/unit --cov=src --cov-report=term-missing --cov-report=xml && \
+	@uv run python -m pytest tests/unit --cov=src --cov-report=term-missing --cov-report=xml && \
 	rm .coverage
 
 test-conformance:
-	@python -m pytest tests/conformance
+	@uv run python -m pytest tests/conformance
 
 test-structure:
 	@SRC=$$(cd src && find . -type f -name "*.py" ! -name "__init__.py" | sed 's|^\./||' | sort); \
@@ -70,12 +70,12 @@ test-structure:
 # * -------------------------------- *
 
 lint:
-	@python -m ruff check src tests
-	@python -m ruff format --check src tests
+	@uv run python -m ruff check src tests
+	@uv run python -m ruff format --check src tests
 
 format:
-	@python -m ruff check --fix src tests
-	@python -m ruff format src tests
+	@uv run python -m ruff check --fix src tests
+	@uv run python -m ruff format src tests
 
 # * -------------------------------- *
 

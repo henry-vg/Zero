@@ -1,3 +1,17 @@
+[project]
+name = "Zero"
+description = "Building a computer from its logical axioms."
+version = "0.1.0"
+requires-python = ">=3.15,<3.16"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "ruff",
+]
+
 [tool.ruff]
 line-length = 88
 target-version = "py312"
@@ -36,4 +50,3 @@ exclude_lines = [
     "if __name__ == .__main__.:",
     "if TYPE_CHECKING:",
 ]
-

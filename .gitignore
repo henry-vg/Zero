@@ -5,6 +5,9 @@ __pycache__/
 .coverage.*
 .pytest_cache/
 .ruff_cache/
+.venv
+.venv-*
+.venv_*
 .vscode/
 *.log
 coverage.xml
