@@ -1,36 +1,35 @@
-from src.host.execution import runner
-from src.host.trusted_base import (
-    NAND,
-    Bit,
-)
+from src.host.execution import metrics
+from src.host.execution.runner import run
 
 
-def test_format_duration():
-    assert runner._format_duration(999) == "999 ns"
-    assert runner._format_duration(1_000) == "1.00 µs"
-    assert runner._format_duration(1_000_000) == "1.00 ms"
-    assert runner._format_duration(1_000_000_000) == "1.00 s"
+def test_run_rendering(monkeypatch):
+    timestamps = iter((100, 125))
+    monkeypatch.setattr(metrics, "perf_counter_ns", lambda: next(timestamps))
 
-
-def test_run():
+    @metrics.count_calls_metric("nand_calls")
     def program() -> str:
-        return repr(NAND(Bit(1), Bit(1)))
+        return "done"
 
-    output = runner.run(program)
+    output = run(program)
 
-    assert "Bit(0)" in output
-    assert "bit_instances: 3" in output
-    assert "nand_calls: 1" in output
-    assert "time_elapsed:" in output
+    assert "done" in output
+    assert "\033[1;33mGUEST\033[0m" in output
+    assert "  Bit Instances │ \033[32m0\033[0m" in output
+    assert "  NAND Calls    │ \033[32m1\033[0m" in output
+    assert "\033[1;33mHOST\033[0m" in output
+    assert "  Elapsed Time  │ \033[32m25 ns\033[0m" in output
 
 
-def test_run_reports_exception():
+def test_run_rendering_on_error(monkeypatch):
+    timestamps = iter((100, 125))
+    monkeypatch.setattr(metrics, "perf_counter_ns", lambda: next(timestamps))
+
     def program() -> str:
         raise RuntimeError("boom")
 
-    output = runner.run(program)
+    output = run(program)
 
-    assert "[FATAL] boom" in output
-    assert "bit_instances: 0" in output
-    assert "nand_calls: 0" in output
-    assert "time_elapsed:" in output
+    assert "\033[1;31m[FATAL]\033[0m boom" in output
+    assert "  Bit Instances │ \033[32m0\033[0m" in output
+    assert "  NAND Calls    │ \033[32m0\033[0m" in output
+    assert "  Elapsed Time  │ \033[32m25 ns\033[0m" in output

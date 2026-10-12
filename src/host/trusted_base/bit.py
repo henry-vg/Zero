@@ -1,10 +1,10 @@
 from typing import Literal
 
-from src.host.execution.metrics import count_metric
+from src.host.execution.metrics import count_calls_metric
 
 
 class Bit:
-    @count_metric("bit_instances")
+    @count_calls_metric("bit_instances")
     def __init__(
         self,
         value: Literal[0, 1],

@@ -1,44 +1,58 @@
-from src.host.execution.metrics import (
-    collect_metrics,
-    count_metric,
-)
-from src.host.trusted_base import (
-    NAND,
-    Bit,
-)
+import pytest
+from src.host.execution import metrics
 
 
-def test_collect_metrics():
-    with collect_metrics() as metrics:
-        assert vars(metrics) == {
-            "bit_instances": 0,
-            "nand_calls": 0,
-        }
-
-        NAND(Bit(1), Bit(1))
-
-        assert vars(metrics) == {
-            "bit_instances": 3,
-            "nand_calls": 1,
-        }
+def test_format_duration():
+    assert metrics._format_duration(999) == "999 ns"
+    assert metrics._format_duration(1_000) == "1.00 µs"
+    assert metrics._format_duration(1_000_000) == "1.00 ms"
+    assert metrics._format_duration(1_000_000_000) == "1.00 s"
 
 
-def test_count_metric_without_collection():
-    @count_metric("nand_calls")
-    def identity() -> str:
+def test_count_calls_metric():
+    @metrics.count_calls_metric("nand_calls")
+    def operation() -> str:
         return "done"
 
-    assert identity() == "done"
+    with metrics.collect_execution_metrics() as execution_metrics:
+        assert operation() == "done"
+
+    assert execution_metrics.guest.nand_calls == 1
 
 
-def test_collect_metrics_restores_previous_context():
-    with collect_metrics() as outer:
-        Bit(0)
+def test_collect_execution_metrics(monkeypatch):
+    timestamps = iter((100, 125))
+    monkeypatch.setattr(metrics, "perf_counter_ns", lambda: next(timestamps))
 
-        with collect_metrics() as inner:
-            Bit(1)
+    with metrics.collect_execution_metrics() as execution_metrics:
+        pass
 
-        Bit(0)
+    assert execution_metrics.host.elapsed_time_ns == 25
 
-    assert outer.bit_instances == 2
-    assert inner.bit_instances == 1
+
+def test_collect_execution_metrics_on_error(monkeypatch):
+    timestamps = iter((100, 125))
+    monkeypatch.setattr(metrics, "perf_counter_ns", lambda: next(timestamps))
+
+    with pytest.raises(RuntimeError, match="failed"):
+        with metrics.collect_execution_metrics() as execution_metrics:
+            raise RuntimeError("failed")
+
+    assert execution_metrics.host.elapsed_time_ns == 25
+
+
+def test_collect_execution_metrics_restores_outer_context():
+    @metrics.count_calls_metric("nand_calls")
+    def operation() -> None:
+        pass
+
+    with metrics.collect_execution_metrics() as outer:
+        operation()
+
+        with metrics.collect_execution_metrics() as inner:
+            operation()
+
+        operation()
+
+    assert outer.guest.nand_calls == 2
+    assert inner.guest.nand_calls == 1
