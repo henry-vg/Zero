@@ -78,28 +78,3 @@ format:
 	@uv run python -m ruff format src tests
 
 # * -------------------------------- *
-
-REQUIREMENTS_TXT_PATH = "requirements.txt"
-REQUIREMENTS_IN_PATH = "requirements.in"
-
-compile-requirements:
-	@if CUSTOM_COMPILE_COMMAND='make compile-requirements' python -m piptools compile --resolver=backtracking --strip-extras --output-file=$(REQUIREMENTS_TXT_PATH) $(REQUIREMENTS_IN_PATH) >/dev/null 2>&1; then \
-			echo 'Requirements compiled successfully.'; \
-		else \
-			echo 'Failed to compile requirements.'; \
-			exit 1; \
-		fi
-
-check-requirements:
-	@tmp_file="$$(mktemp)"; \
-	trap 'rm -f "$$tmp_file"' EXIT; \
-	cp $(REQUIREMENTS_TXT_PATH) "$$tmp_file"; \
-	CUSTOM_COMPILE_COMMAND='make compile-requirements' python -m piptools compile --resolver=backtracking --strip-extras --quiet --output-file="$$tmp_file" $(REQUIREMENTS_IN_PATH) >/dev/null; \
-	if diff -q $(REQUIREMENTS_TXT_PATH) "$$tmp_file" >/dev/null; then \
-		echo 'Requirements up to date.'; \
-	else \
-		echo 'Requirements out of sync. Try running "make compile-requirements".'; \
-		exit 1; \
-	fi
-	
-# * -------------------------------- *
