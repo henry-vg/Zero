@@ -24,23 +24,31 @@ test:
 	@uv run python -m pytest tests
 
 test-with-coverage:
-	@uv run python -m pytest tests --cov=src && \
-	rm .coverage
+	@uv run python -m pytest tests --cov=src; \
+	status=$$?; \
+	rm -f .coverage; \
+	exit $$status
 
 test-with-coverage-and-reports:
-	@uv run python -m pytest tests --cov=src --cov-report=term-missing --cov-report=xml && \
-	rm .coverage
+	@uv run python -m pytest tests --cov=src --cov-report=term-missing --cov-report=xml; \
+	status=$$?; \
+	rm -f .coverage; \
+	exit $$status
 
 test-unit:
 	@uv run python -m pytest tests/unit
 
 test-unit-with-coverage:
-	@uv run python -m pytest tests/unit --cov=src && \
-	rm .coverage
+	@uv run python -m pytest tests/unit --cov=src; \
+	status=$$?; \
+	rm -f .coverage; \
+	exit $$status
 
 test-unit-with-coverage-and-reports:
-	@uv run python -m pytest tests/unit --cov=src --cov-report=term-missing --cov-report=xml && \
-	rm .coverage
+	@uv run python -m pytest tests/unit --cov=src --cov-report=term-missing --cov-report=xml; \
+	status=$$?; \
+	rm -f .coverage; \
+	exit $$status
 
 test-conformance:
 	@uv run python -m pytest tests/conformance
