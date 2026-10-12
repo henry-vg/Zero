@@ -1,4 +1,5 @@
 import shutil
+from dataclasses import fields
 from time import perf_counter_ns
 from typing import Callable
 
@@ -31,10 +32,19 @@ def run(
             output = program()
 
         except Exception as e:
-            output = f"[FATAL] {e}"
+            output = f"\033[1;31m[FATAL]\033[0m {e}"
 
         elapsed_ns = perf_counter_ns() - started_at
         terminal_width = shutil.get_terminal_size().columns
+
+        guest_metrics = {
+            field.metadata.get("label", field.name): getattr(metrics, field.name)
+            for field in fields(metrics)
+        }
+        host_metrics = {
+            "Time Elapsed": _format_duration(elapsed_ns),
+        }
+        metrics_width = max(map(len, guest_metrics.keys() | host_metrics.keys()))
 
     return "\n".join(
         [
@@ -43,11 +53,14 @@ def run(
             f"\033[96m{' METRICS '.center(terminal_width, '─')}\033[0m",
             "\033[1;33mGUEST\033[0m",
             *(
-                f"  {name}: \033[32m{value}\033[0m"
-                for name, value in vars(metrics).items()
+                f"  {name + ':':<{metrics_width + 1}} \033[32m{value}\033[0m"
+                for name, value in guest_metrics.items()
             ),
             "\033[1;33mHOST\033[0m",
-            f"  time_elapsed: \033[35m{_format_duration(elapsed_ns)}\033[0m",
+            *(
+                f"  {name + ':':<{metrics_width + 1}} \033[32m{value}\033[0m"
+                for name, value in host_metrics.items()
+            ),
             f"\033[96m{'─' * terminal_width}\033[0m",
         ]
     )

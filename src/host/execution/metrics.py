@@ -3,15 +3,18 @@ from collections.abc import (
 )
 from contextlib import contextmanager
 from contextvars import ContextVar
-from dataclasses import dataclass
+from dataclasses import (
+    dataclass,
+    field,
+)
 from functools import wraps
 from typing import Generator
 
 
 @dataclass
 class ExecutionMetrics:
-    bit_instances: int = 0
-    nand_calls: int = 0
+    bit_instances: int = field(default=0, metadata={"label": "Bit Instances"})
+    nand_calls: int = field(default=0, metadata={"label": "NAND Calls"})
 
 
 _current_metrics: ContextVar[ExecutionMetrics | None] = ContextVar(
